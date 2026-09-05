@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Indian Railways Block Planner</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; background-color: #f4f6f9; }
+        .container { max-width: 700px; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h2 { color: #0d47a1; }
+        label { font-weight: bold; display: block; margin-top: 10px; }
+        input, button { width: 100%; padding: 10px; margin-top: 5px; box-sizing: border-box; }
+        button { background-color: #0d47a1; color: white; border: none; font-weight: bold; cursor: pointer; margin-top: 15px; }
+        button:hover { background-color: #1565c0; }
+        pre { background: #212121; color: #76ff03; padding: 15px; border-radius: 5px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>SIH26027 - AI Block Planner Dashboard</h2>
+    
+    <label>Track Section ID:</label>
+    <input type="text" id="sectionId" value="SECTION_MUMBAI_DELHI_01">
+
+    <label>Total Available Hours:</label>
+    <input type="number" id="hours" value="6">
+
+    <button onclick="submitPlanningRequest()">Optimize Schedule</button>
+
+    <h3>Optimized Output:</h3>
+    <pre id="output">Click "Optimize Schedule" to view output...</pre>
+</div>
+
+<script>
+async function submitPlanningRequest() {
+    const sectionId = document.getElementById('sectionId').value;
+    const hours = parseInt(document.getElementById('hours').value);
+
+    // Formulate payload
+    const payload = {
+        track_section_id: sectionId,
+        total_available_hours: hours,
+        trains: [
+            { train_id: "12002_SHATABDI", priority: 9, requested_duration_hours: 2 },
+            { train_id: "12951_RAJDHANI", priority: 10, requested_duration_hours: 3 },
+            { train_id: "04011_FREIGHT_LOCAL", priority: 3, requested_duration_hours: 3 }
+        ]
+    };
+
+    document.getElementById('output').innerText = "Processing request via Java & Python backend...";
+
+    try {
+        // Send request to Java Spring Boot REST API
+        const response = await fetch('/api/schedule', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+        document.getElementById('output').innerText = JSON.stringify(data, null, 2);
+    } catch (error) {
+        document.getElementById('output').innerText = "Error connecting to backend server.";
+    }
+}
+</script>
+
+</body>
+</html>
