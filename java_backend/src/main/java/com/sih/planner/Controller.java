@@ -1,15 +1,19 @@
 package com.sih.planner;
 
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins = "*") // Allows web requests from frontend
 public class Controller {
 
-    private final Service pythonService;
+    private final PythonIntegrationService pythonService;
 
-    public Controller(Service pythonService) {
+    public Controller(PythonIntegrationService pythonService) {
         this.pythonService = pythonService;
     }
 

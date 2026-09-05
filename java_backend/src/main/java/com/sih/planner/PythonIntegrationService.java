@@ -1,13 +1,14 @@
 package com.sih.planner;
 
-import org.springframework.stereotype.Service;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+import org.springframework.stereotype.Service;
+
 @Service
-public class Service {
+public class PythonIntegrationService {
 
     private static final String PYTHON_ENGINE_URL = "http://127.0.0.1:8000/api/v1/optimize";
     private final HttpClient httpClient = HttpClient.newHttpClient();
@@ -23,7 +24,7 @@ public class Service {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             return response.body();
         } catch (Exception e) {
-            return "{\"error\": \"Failed to reach Python service\"}";
+            return "{\"error\": \"Failed to reach Python optimization engine\"}";
         }
     }
 }
